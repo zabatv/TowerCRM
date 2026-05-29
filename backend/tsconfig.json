@@ -10,7 +10,6 @@
     "sourceMap": true,
     "outDir": "./dist",
     "rootDir": "./src",
-    "typeRoots": ["../node_modules/@types", "./node_modules/@types"],
     "incremental": true,
     "skipLibCheck": true,
     "strictNullChecks": true,
@@ -20,8 +19,7 @@
     "forceConsistentCasingInFileNames": false,
     "noFallthroughCasesInSwitch": false,
     "esModuleInterop": true,
-    "resolveJsonModule": true,
-    "types": ["node", "express", "multer"]
+    "resolveJsonModule": true
   },
   "include": ["src/**/*"],
   "exclude": ["node_modules", "dist"]
