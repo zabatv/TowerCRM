@@ -70,8 +70,16 @@ async function bootstrap() {
 
   app.setGlobalPrefix('api', { exclude: ['health'] });
 
+  const allowedOrigins = [
+    'http://localhost:5173',
+    'https://towercrm-frontend.onrender.com',
+  ];
+  if (process.env.FRONTEND_URL) allowedOrigins.push(process.env.FRONTEND_URL.replace(/\/$/, ''));
   app.enableCors({
-    origin: process.env.FRONTEND_URL || 'http://localhost:5173',
+    origin: (origin, cb) => {
+      if (!origin || allowedOrigins.some((o) => origin.startsWith(o))) cb(null, true);
+      else cb(new Error('CORS not allowed'));
+    },
     credentials: true,
   });
 
