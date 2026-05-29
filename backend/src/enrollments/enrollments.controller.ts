@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Put, Delete, Body, Param, Query, UseGuards } from '@nestjs/common';
+﻿import { Controller, Get, Post, Put, Delete, Body, Param, Query, UseGuards } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiBearerAuth } from '@nestjs/swagger';
 import { EnrollmentsService } from './enrollments.service';
 import { CreateEnrollmentDto } from './dto/create-enrollment.dto';
@@ -9,7 +9,7 @@ import { Roles } from '../common/decorators/roles.decorator';
 @ApiTags('Enrollments')
 @ApiBearerAuth()
 @UseGuards(JwtAuthGuard, RolesGuard)
-@Controller('api/enrollments')
+@Controller('enrollments')
 export class EnrollmentsController {
   constructor(private enrollmentsService: EnrollmentsService) {}
 
