@@ -6,6 +6,7 @@ import { ProtectedRoute } from './components/ProtectedRoute';
 import { Login } from './pages/Login';
 import { Register } from './pages/Register';
 import { Dashboard } from './pages/Dashboard';
+import { Schedule } from './pages/Schedule';
 import { Branches } from './pages/Branches';
 import { Employees } from './pages/Employees';
 import { Leads } from './pages/Leads';
@@ -23,6 +24,7 @@ export default function App() {
           <Route path="/register" element={<Register />} />
           <Route element={<ProtectedRoute><SocketProvider><Layout /></SocketProvider></ProtectedRoute>}>
             <Route path="/" element={<Dashboard />} />
+            <Route path="/schedule" element={<ProtectedRoute roles={['admin', 'manager', 'teacher']}><Schedule /></ProtectedRoute>} />
             <Route path="/branches" element={<ProtectedRoute roles={['admin', 'manager']}><Branches /></ProtectedRoute>} />
             <Route path="/employees" element={<ProtectedRoute roles={['admin', 'manager']}><Employees /></ProtectedRoute>} />
             <Route path="/leads" element={<ProtectedRoute roles={['admin', 'manager', 'sales']}><Leads /></ProtectedRoute>} />

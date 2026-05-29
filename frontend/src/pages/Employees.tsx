@@ -1,6 +1,8 @@
 import { useState, useEffect, FormEvent } from 'react';
 import { usersApi } from '../api/auth';
 
+const roleLabels: Record<string, string> = { admin: 'Админ', manager: 'Менеджер', teacher: 'Преподаватель', sales: 'Продажи' };
+
 export function Employees() {
   const [users, setUsers] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
@@ -40,26 +42,26 @@ export function Employees() {
   };
 
   const handleDelete = async (id: string) => {
-    if (!confirm('Deactivate this user?')) return;
+    if (!confirm('Деактивировать этого сотрудника?')) return;
     await usersApi.delete(id);
     load();
   };
 
   const roles = ['admin', 'manager', 'teacher', 'sales'];
 
-  if (loading) return <div className="loading">Loading...</div>;
+  if (loading) return <div className="loading">Загрузка...</div>;
 
   return (
     <div className="page">
       <div className="page-header">
-        <h1>Employees</h1>
-        <button className="btn btn-primary" onClick={() => { setShowForm(!showForm); setEditingId(null); setForm({ name: '', email: '', password: '', role: 'teacher', branchId: '' }); }}>Add Employee</button>
+        <h1>Сотрудники</h1>
+        <button className="btn btn-primary" onClick={() => { setShowForm(!showForm); setEditingId(null); setForm({ name: '', email: '', password: '', role: 'teacher', branchId: '' }); }}>+ Сотрудник</button>
       </div>
 
       {showForm && (
         <form onSubmit={handleSubmit} className="card form-card">
           <div className="form-group">
-            <label>Name</label>
+            <label>Имя</label>
             <input value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} required />
           </div>
           <div className="form-group">
@@ -68,19 +70,19 @@ export function Employees() {
           </div>
           {!editingId && (
             <div className="form-group">
-              <label>Password</label>
+              <label>Пароль</label>
               <input type="password" value={form.password} onChange={(e) => setForm({ ...form, password: e.target.value })} required={!editingId} minLength={6} />
             </div>
           )}
           <div className="form-group">
-            <label>Role</label>
+            <label>Роль</label>
             <select value={form.role} onChange={(e) => setForm({ ...form, role: e.target.value })}>
-              {roles.map((r) => <option key={r} value={r}>{r}</option>)}
+              {roles.map((r) => <option key={r} value={r}>{roleLabels[r]}</option>)}
             </select>
           </div>
           <div className="form-actions">
-            <button type="submit" className="btn btn-primary">{editingId ? 'Update' : 'Create'}</button>
-            <button type="button" className="btn btn-outline" onClick={() => setShowForm(false)}>Cancel</button>
+            <button type="submit" className="btn btn-primary">{editingId ? 'Обновить' : 'Создать'}</button>
+            <button type="button" className="btn btn-outline" onClick={() => setShowForm(false)}>Отмена</button>
           </div>
         </form>
       )}
@@ -89,12 +91,12 @@ export function Employees() {
         <table className="table">
           <thead>
             <tr>
-              <th>Name</th>
+              <th>Имя</th>
               <th>Email</th>
-              <th>Role</th>
-              <th>Branch</th>
-              <th>Active</th>
-              <th>Actions</th>
+              <th>Роль</th>
+              <th>Филиал</th>
+              <th>Активен</th>
+              <th>Действия</th>
             </tr>
           </thead>
           <tbody>
@@ -102,16 +104,16 @@ export function Employees() {
               <tr key={u.id}>
                 <td>{u.name}</td>
                 <td>{u.email}</td>
-                <td><span className="badge badge-role">{u.role}</span></td>
+                <td><span className="badge badge-role">{roleLabels[u.role] || u.role}</span></td>
                 <td>{u.branch?.name || '-'}</td>
                 <td>{u.isActive ? '✓' : '✗'}</td>
                 <td>
-                  <button className="btn btn-sm btn-outline" onClick={() => handleEdit(u)}>Edit</button>
-                  <button className="btn btn-sm btn-danger" onClick={() => handleDelete(u.id)}>Deactivate</button>
+                  <button className="btn btn-sm btn-outline" onClick={() => handleEdit(u)}>Ред.</button>
+                  <button className="btn btn-sm btn-danger" onClick={() => handleDelete(u.id)}>Деакт.</button>
                 </td>
               </tr>
             ))}
-            {users.length === 0 && <tr><td colSpan={6} className="empty">No employees found</td></tr>}
+            {users.length === 0 && <tr><td colSpan={6} className="empty">Сотрудников нет</td></tr>}
           </tbody>
         </table>
       </div>

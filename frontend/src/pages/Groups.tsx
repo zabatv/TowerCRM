@@ -34,45 +34,45 @@ export function Groups() {
   };
 
   const handleDelete = async (id: string) => {
-    if (!confirm('Delete this group?')) return;
+    if (!confirm('Удалить эту группу?')) return;
     await groupsApi.delete(id);
     load();
   };
 
-  if (loading) return <div className="loading">Loading...</div>;
+  if (loading) return <div className="loading">Загрузка...</div>;
 
   return (
     <div className="page">
       <div className="page-header">
-        <h1>Groups</h1>
-        <button className="btn btn-primary" onClick={() => { setShowForm(!showForm); setEditingId(null); setForm({ name: '', course: '', level: '', capacity: 10, teacherId: '', branchId: '' }); }}>Add Group</button>
+        <h1>Группы</h1>
+        <button className="btn btn-primary" onClick={() => { setShowForm(!showForm); setEditingId(null); setForm({ name: '', course: '', level: '', capacity: 10, teacherId: '', branchId: '' }); }}>+ Группа</button>
       </div>
 
       {showForm && (
         <form onSubmit={handleSubmit} className="card form-card">
           <div className="form-row">
             <div className="form-group">
-              <label>Name *</label>
+              <label>Название *</label>
               <input value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} required />
             </div>
             <div className="form-group">
-              <label>Course</label>
+              <label>Курс</label>
               <input value={form.course} onChange={(e) => setForm({ ...form, course: e.target.value })} />
             </div>
           </div>
           <div className="form-row">
             <div className="form-group">
-              <label>Level</label>
+              <label>Уровень</label>
               <input value={form.level} onChange={(e) => setForm({ ...form, level: e.target.value })} />
             </div>
             <div className="form-group">
-              <label>Capacity</label>
+              <label>Вместимость</label>
               <input type="number" value={form.capacity} onChange={(e) => setForm({ ...form, capacity: Number(e.target.value) })} min={1} />
             </div>
           </div>
           <div className="form-actions">
-            <button type="submit" className="btn btn-primary">{editingId ? 'Update' : 'Create'}</button>
-            <button type="button" className="btn btn-outline" onClick={() => setShowForm(false)}>Cancel</button>
+            <button type="submit" className="btn btn-primary">{editingId ? 'Обновить' : 'Создать'}</button>
+            <button type="button" className="btn btn-outline" onClick={() => setShowForm(false)}>Отмена</button>
           </div>
         </form>
       )}
@@ -81,14 +81,14 @@ export function Groups() {
         <table className="table">
           <thead>
             <tr>
-              <th>Name</th>
-              <th>Course / Level</th>
-              <th>Capacity</th>
-              <th>Enrolled</th>
-              <th>Teacher</th>
-              <th>Branch</th>
-              <th>Status</th>
-              <th>Actions</th>
+              <th>Название</th>
+              <th>Курс / Уровень</th>
+              <th>Вместимость</th>
+              <th>Записано</th>
+              <th>Преподаватель</th>
+              <th>Филиал</th>
+              <th>Статус</th>
+              <th>Действия</th>
             </tr>
           </thead>
           <tbody>
@@ -105,14 +105,14 @@ export function Groups() {
                 </td>
                 <td>{g.teacher?.name || '-'}</td>
                 <td>{g.branch?.name || '-'}</td>
-                <td><span className={`badge badge-${g.status}`}>{g.status}</span></td>
+                <td><span className={`badge badge-${g.status}`}>{g.status === 'active' ? 'Активна' : g.status}</span></td>
                 <td>
-                  <button className="btn btn-sm btn-outline" onClick={() => { setForm({ name: g.name, course: g.course || '', level: g.level || '', capacity: g.capacity, teacherId: g.teacherId || '', branchId: g.branchId || '' }); setEditingId(g.id); setShowForm(true); }}>Edit</button>
-                  <button className="btn btn-sm btn-danger" onClick={() => handleDelete(g.id)}>Delete</button>
+                  <button className="btn btn-sm btn-outline" onClick={() => { setForm({ name: g.name, course: g.course || '', level: g.level || '', capacity: g.capacity, teacherId: g.teacherId || '', branchId: g.branchId || '' }); setEditingId(g.id); setShowForm(true); }}>Ред.</button>
+                  <button className="btn btn-sm btn-danger" onClick={() => handleDelete(g.id)}>Удалить</button>
                 </td>
               </tr>
             ))}
-            {groups.length === 0 && <tr><td colSpan={8} className="empty">No groups found</td></tr>}
+            {groups.length === 0 && <tr><td colSpan={8} className="empty">Групп нет</td></tr>}
           </tbody>
         </table>
       </div>

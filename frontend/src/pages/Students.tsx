@@ -20,23 +20,23 @@ export function Students() {
 
   useEffect(() => { load(); }, []);
 
-  if (loading) return <div className="loading">Loading...</div>;
+  if (loading) return <div className="loading">Загрузка...</div>;
 
   return (
     <div className="page">
       <div className="page-header">
-        <h1>Students</h1>
+        <h1>Студенты</h1>
       </div>
 
       <div className="table-container">
         <table className="table">
           <thead>
             <tr>
-              <th>Name</th>
+              <th>Имя</th>
               <th>Email</th>
-              <th>Branch</th>
-              <th>Status</th>
-              <th>Enrolled Since</th>
+              <th>Филиал</th>
+              <th>Статус</th>
+              <th>Записан с</th>
             </tr>
           </thead>
           <tbody>
@@ -45,11 +45,11 @@ export function Students() {
                 <td>{s.name}</td>
                 <td>{s.email}</td>
                 <td>{s.branch?.name || '-'}</td>
-                <td>{s.isActive ? 'Active' : 'Inactive'}</td>
-                <td>{new Date(s.createdAt).toLocaleDateString()}</td>
+                <td>{s.isActive ? 'Активен' : 'Неактивен'}</td>
+                <td>{new Date(s.createdAt).toLocaleDateString('ru-RU')}</td>
               </tr>
             ))}
-            {students.length === 0 && <tr><td colSpan={5} className="empty">No students found. Convert a lead to create a student.</td></tr>}
+            {students.length === 0 && <tr><td colSpan={5} className="empty">Студентов нет. Конвертируйте лид, чтобы создать студента.</td></tr>}
           </tbody>
         </table>
       </div>

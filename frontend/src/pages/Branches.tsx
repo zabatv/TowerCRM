@@ -40,37 +40,37 @@ export function Branches() {
   };
 
   const handleDelete = async (id: string) => {
-    if (!confirm('Delete this branch?')) return;
+    if (!confirm('Удалить этот филиал?')) return;
     await branchesApi.delete(id);
     load();
   };
 
-  if (loading) return <div className="loading">Loading...</div>;
+  if (loading) return <div className="loading">Загрузка...</div>;
 
   return (
     <div className="page">
       <div className="page-header">
-        <h1>Branches</h1>
-        <button className="btn btn-primary" onClick={() => { setShowForm(!showForm); setEditingId(null); setForm({ name: '', address: '', phone: '' }); }}>Add Branch</button>
+        <h1>Филиалы</h1>
+        <button className="btn btn-primary" onClick={() => { setShowForm(!showForm); setEditingId(null); setForm({ name: '', address: '', phone: '' }); }}>+ Филиал</button>
       </div>
 
       {showForm && (
         <form onSubmit={handleSubmit} className="card form-card">
           <div className="form-group">
-            <label>Name</label>
+            <label>Название</label>
             <input value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} required />
           </div>
           <div className="form-group">
-            <label>Address</label>
+            <label>Адрес</label>
             <input value={form.address} onChange={(e) => setForm({ ...form, address: e.target.value })} />
           </div>
           <div className="form-group">
-            <label>Phone</label>
+            <label>Телефон</label>
             <input value={form.phone} onChange={(e) => setForm({ ...form, phone: e.target.value })} />
           </div>
           <div className="form-actions">
-            <button type="submit" className="btn btn-primary">{editingId ? 'Update' : 'Create'}</button>
-            <button type="button" className="btn btn-outline" onClick={() => setShowForm(false)}>Cancel</button>
+            <button type="submit" className="btn btn-primary">{editingId ? 'Обновить' : 'Создать'}</button>
+            <button type="button" className="btn btn-outline" onClick={() => setShowForm(false)}>Отмена</button>
           </div>
         </form>
       )}
@@ -79,12 +79,12 @@ export function Branches() {
         <table className="table">
           <thead>
             <tr>
-              <th>Name</th>
-              <th>Address</th>
-              <th>Phone</th>
-              <th>Users</th>
-              <th>Groups</th>
-              <th>Actions</th>
+              <th>Название</th>
+              <th>Адрес</th>
+              <th>Телефон</th>
+              <th>Сотрудники</th>
+              <th>Группы</th>
+              <th>Действия</th>
             </tr>
           </thead>
           <tbody>
@@ -96,12 +96,12 @@ export function Branches() {
                 <td>{b._count?.users || 0}</td>
                 <td>{b._count?.groups || 0}</td>
                 <td>
-                  <button className="btn btn-sm btn-outline" onClick={() => handleEdit(b)}>Edit</button>
-                  <button className="btn btn-sm btn-danger" onClick={() => handleDelete(b.id)}>Delete</button>
+                  <button className="btn btn-sm btn-outline" onClick={() => handleEdit(b)}>Ред.</button>
+                  <button className="btn btn-sm btn-danger" onClick={() => handleDelete(b.id)}>Удалить</button>
                 </td>
               </tr>
             ))}
-            {branches.length === 0 && <tr><td colSpan={6} className="empty">No branches found</td></tr>}
+            {branches.length === 0 && <tr><td colSpan={6} className="empty">Филиалов нет</td></tr>}
           </tbody>
         </table>
       </div>

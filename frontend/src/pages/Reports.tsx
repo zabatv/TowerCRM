@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react';
 import { dashboardApi } from '../api/dashboard';
 import { leadsApi } from '../api/leads';
 
+const sourceLabels: Record<string, string> = { website: 'Сайт', referral: 'Рекомендация', social: 'Соцсети', call: 'Звонок', other: 'Другое' };
+
 export function Reports() {
   const [stats, setStats] = useState<any>(null);
   const [leads, setLeads] = useState<any[]>([]);
@@ -20,12 +22,12 @@ export function Reports() {
       .finally(() => setLoading(false));
   }, []);
 
-  if (loading) return <div className="loading">Loading...</div>;
+  if (loading) return <div className="loading">Загрузка...</div>;
 
   const exportCsv = () => {
     if (!leads.length) return;
     const headers = 'Name,Email,Phone,Source,Status,Created\n';
-    const rows = leads.map((l: any) => `${l.name},${l.email || ''},${l.phone || ''},${l.source || ''},${l.status},${new Date(l.createdAt).toISOString()}`).join('\n');
+    const rows = leads.map((l: any) => `"${l.name}","${l.email || ''}","${l.phone || ''}","${l.source || ''}","${l.status}","${new Date(l.createdAt).toISOString()}"`).join('\n');
     const blob = new Blob([headers + rows], { type: 'text/csv' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
@@ -38,52 +40,52 @@ export function Reports() {
   return (
     <div className="page">
       <div className="page-header">
-        <h1>Reports</h1>
-        <button className="btn btn-primary" onClick={exportCsv}>Export Leads CSV</button>
+        <h1>Отчёты</h1>
+        <button className="btn btn-primary" onClick={exportCsv}>Экспорт CSV</button>
       </div>
 
       {stats && (
         <div className="stats-grid">
           <div className="stat-card">
             <div className="stat-value">{stats.leads.total}</div>
-            <div className="stat-label">Total Leads</div>
+            <div className="stat-label">Всего лидов</div>
           </div>
           <div className="stat-card stat-new">
             <div className="stat-value">{stats.leads.new}</div>
-            <div className="stat-label">New</div>
+            <div className="stat-label">Новые</div>
           </div>
           <div className="stat-card">
             <div className="stat-value">{stats.leads.contacted}</div>
-            <div className="stat-label">Contacted</div>
+            <div className="stat-label">В контакте</div>
           </div>
           <div className="stat-card stat-converted">
             <div className="stat-value">{stats.leads.converted}</div>
-            <div className="stat-label">Converted</div>
+            <div className="stat-label">Конвертировано</div>
           </div>
           <div className="stat-card stat-lost">
             <div className="stat-value">{stats.leads.lost}</div>
-            <div className="stat-label">Lost</div>
+            <div className="stat-label">Потеряно</div>
           </div>
           <div className="stat-card">
             <div className="stat-value">{stats.leads.conversionRate}%</div>
-            <div className="stat-label">Conversion Rate</div>
+            <div className="stat-label">Конверсия</div>
           </div>
         </div>
       )}
 
       <div className="section">
-        <h2>Lead Breakdown by Source</h2>
+        <h2>Лиды по источникам</h2>
         <table className="table">
           <thead>
             <tr>
-              <th>Source</th>
-              <th>Count</th>
+              <th>Источник</th>
+              <th>Количество</th>
             </tr>
           </thead>
           <tbody>
             {['website', 'referral', 'social', 'call', 'other'].map((src) => (
               <tr key={src}>
-                <td>{src}</td>
+                <td>{sourceLabels[src]}</td>
                 <td>{leads.filter((l) => l.source === src).length}</td>
               </tr>
             ))}
