@@ -1,0 +1,29 @@
+{
+  "name": "towercrm",
+  "version": "1.0.0",
+  "private": true,
+  "workspaces": [
+    "backend",
+    "frontend",
+    "shared"
+  ],
+  "scripts": {
+    "dev": "concurrently \"npm run dev:backend\" \"npm run dev:frontend\"",
+    "dev:backend": "npm run dev -w backend",
+    "dev:frontend": "npm run dev -w frontend",
+    "build": "npm run build -w shared && npm run build -w backend && npm run build -w frontend",
+    "start": "npm run start -w backend",
+    "migrate": "npm run migrate -w backend",
+    "migrate:dev": "npm run migrate:dev -w backend",
+    "seed": "npm run seed -w backend",
+    "studio": "npm run studio -w backend",
+    "test": "npm run test -w backend",
+    "test:e2e": "npm run test:e2e -w backend",
+    "lint": "npm run lint -w backend && npm run lint -w frontend",
+    "format": "prettier --write \"**/*.{ts,tsx,js,json,css,md}\""
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2",
+    "prettier": "^3.2.5"
+  }
+}
