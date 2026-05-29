@@ -33,7 +33,8 @@ export function SocketProvider({ children }: { children: ReactNode }) {
     if (!isAuthenticated) return;
 
     const token = localStorage.getItem('token');
-    const socket = io('/ws', {
+    const wsUrl = import.meta.env.VITE_WS_URL || '/ws';
+    const socket = io(wsUrl, {
       auth: { token },
       transports: ['websocket', 'polling'],
     });
