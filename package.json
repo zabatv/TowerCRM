@@ -2,11 +2,7 @@
   "name": "towercrm",
   "version": "1.0.0",
   "private": true,
-  "workspaces": [
-    "backend",
-    "frontend",
-    "shared"
-  ],
+  "workspaces": ["backend", "frontend", "shared"],
   "scripts": {
     "dev": "concurrently \"npm run dev:backend\" \"npm run dev:frontend\"",
     "dev:backend": "npm run dev -w backend",
@@ -25,8 +21,6 @@
   },
   "devDependencies": {
     "@nestjs/cli": "^10.3.2",
-    "@types/express": "^4.17.21",
-    "@types/multer": "^1.4.12",
     "concurrently": "^8.2.2",
     "prettier": "^3.2.5",
     "ts-node": "^10.9.2",

@@ -8,6 +8,17 @@ import { JwtAuthGuard } from '../common/guards/jwt-auth.guard';
 import { RolesGuard } from '../common/guards/roles.guard';
 import { Roles } from '../common/decorators/roles.decorator';
 
+interface MulterFile {
+  fieldname: string;
+  originalname: string;
+  encoding: string;
+  mimetype: string;
+  size: number;
+  destination: string;
+  filename: string;
+  path: string;
+}
+
 @ApiTags('Uploads')
 @ApiBearerAuth()
 @UseGuards(JwtAuthGuard, RolesGuard)
@@ -35,7 +46,7 @@ export class UploadsController {
       },
     }),
   )
-  uploadFile(@UploadedFile() file: Express.Multer.File) {
+  uploadFile(@UploadedFile() file: MulterFile) {
     if (!file) throw new BadRequestException('No file uploaded');
     return { filename: file.filename, originalName: file.originalname, size: file.size, path: `/uploads/${file.filename}` };
   }
