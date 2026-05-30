@@ -4,7 +4,7 @@ services:
     env: node
     region: frankfurt
     plan: free
-    buildCommand: npm install && npx prisma generate --schema=backend/prisma/schema.prisma && npm run build:all
+    buildCommand: npm install --include=dev && npx prisma generate --schema=backend/prisma/schema.prisma && npm run build:all
     startCommand: cd backend && npx prisma migrate deploy && node dist/main.js
     healthCheckPath: /health
     envVars:
