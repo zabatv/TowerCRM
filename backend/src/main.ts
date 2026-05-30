@@ -2,6 +2,8 @@ import { NestFactory } from '@nestjs/core';
 import { ValidationPipe } from '@nestjs/common';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import cookieParser from 'cookie-parser';
+import express from 'express';
+import { join } from 'path';
 import { AppModule } from './app.module';
 import { TransformInterceptor } from './common/interceptors/transform.interceptor';
 import { PrismaService } from './prisma/prisma.service';
@@ -72,6 +74,8 @@ async function bootstrap() {
 
   const allowedOrigins = [
     'http://localhost:5173',
+    'http://localhost:3000',
+    'https://towercrm-backend.onrender.com',
     'https://towercrm-frontend.onrender.com',
   ];
   if (process.env.FRONTEND_URL) allowedOrigins.push(process.env.FRONTEND_URL.replace(/\/$/, ''));
@@ -95,6 +99,14 @@ async function bootstrap() {
     .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api/docs', app, document);
+
+  const publicPath = join(__dirname, '..', 'public');
+  const server = app.getHttpAdapter().getInstance();
+  server.use(express.static(publicPath));
+  server.get('*', (req: any, res: any) => {
+    if (req.path.startsWith('/api') || req.path.startsWith('/ws')) return;
+    res.sendFile(join(publicPath, 'index.html'));
+  });
 
   const port = process.env.PORT || 3000;
   await app.listen(port);
